@@ -1,6 +1,0 @@
-scripts:
-  start:
-    file: index.ts
-    deno_options:
-      allow-all: true
-      unstable: true

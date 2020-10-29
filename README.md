@@ -1,5 +1,25 @@
-# EMAIL SERVICE
+# Next.js example
 
-The email service is responsible for sending emails for other applications. You may create a user, generate an API key for other programs to use, review old emails, resend email, integrate with various 3rd-party email senders.
+## How to use
 
-This project runs on DENO!!!!
+Download the example [or clone the repo](https://github.com/mui-org/material-ui):
+
+```sh
+curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs
+cd nextjs
+```
+
+Install it and run:
+
+```sh
+npm install
+npm run dev
+```
+
+or:
+
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui-org/material-ui/tree/master/examples/nextjs)
+
+## The idea behind the example
+
+[Next.js](https://github.com/zeit/next.js) is a framework for server-rendered React apps.

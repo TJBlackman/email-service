@@ -4,26 +4,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormFeedback } from '../components/form-feedback';
 import { networkRequest } from '../utils/network-request';
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(2, 0, 2),
-  },
-}));
+import { useRouter } from 'next/router';
 
 const formValues = {
   firstName: '',
@@ -98,6 +79,7 @@ const reducer = (state: typeof formValues, action: Action) => {
 
 export default function SignUp() {
   const classes = useStyles();
+  const router = useRouter();
   const [localState, dispatch] = useReducer(reducer, formValues);
 
   const submit = (e) => {
@@ -108,13 +90,20 @@ export default function SignUp() {
     }
     dispatch({ type: 'SUBMIT FORM' });
     networkRequest({
-      url: '/api/users',
+      url: '/api/v1/users',
       method: 'POST',
       body: {
+        firstName: localState.firstName,
+        lastName: localState.lastName,
         email: localState.email,
         password: localState.password,
       },
-      success: (json) => alert(JSON.stringify(json, null, 4)),
+      success: (json) => {
+        dispatch({ type: 'SET SUCCESS', payload: 'Successfully Registered!' });
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 3000);
+      },
       error: (err) => {
         dispatch({ type: 'SET ERROR', payload: err.message });
       },
@@ -229,3 +218,24 @@ export default function SignUp() {
     </Container>
   );
 }
+
+// styles
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(2, 0, 2),
+  },
+}));

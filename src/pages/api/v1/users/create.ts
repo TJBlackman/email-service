@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import UserModel from "../../../db/users/user.model";
-import { connectToDB } from "../../../db/connect";
-import { createHash } from '../../../utils/password-helpers';
+import UserModel from "../../../../db/user.model";
+import { connectToDB } from "../../../../db/connect";
+import { IUser } from '../../../../types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.body.email) {
@@ -13,18 +13,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await connectToDB();
   const existingUser = await UserModel.find({ email: req.body.email });
   if (existingUser.length > 0) {
-    throw new Error('Email address is already in use.')
+    throw new Error('Email address is already in use.');
   }
-  const hashPw = await createHash(req.body.password);
   const user = new UserModel({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
-    password: hashPw
+    password: req.body.password,
   });
   const newUser = await user.save();
-  const userDocumentAsObject = newUser.toObject();
+  const userDocumentAsObject = newUser.toObject() as IUser;
   delete userDocumentAsObject.password;
   res.json({
     success: true,
     data: userDocumentAsObject
   });
-}
+};

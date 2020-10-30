@@ -8,6 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "bcrypt": "^5.0.0",
     "clsx": "latest",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.11",
     "next": "latest",
     "prop-types": "latest",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.7.36",
     "@types/node": "^14.14.5",
     "prettier": "2.1.2",

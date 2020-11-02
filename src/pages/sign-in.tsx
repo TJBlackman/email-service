@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { networkRequest } from '../utils/network-request';
 import { FormFeedback } from '../components/form-feedback';
 import { useUserContext } from '../react-contexts/user';
+import { validateLoginValues } from '../utils/validation/user-login';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -81,10 +82,16 @@ export default function SignIn() {
   const router = useRouter();
   const classes = useStyles();
   const { user, setUserData } = useUserContext();
-  console.log(user);
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const { value, error } = validateLoginValues({
+      email: localState.email,
+      password: localState.password,
+    });
+    if (error) {
+      return dispatch({ type: 'SHOW ERROR', payload: error.message });
+    }
     dispatch({ type: 'SUBMIT FORM' });
     networkRequest({
       url: '/api/v1/auth/local',
@@ -116,7 +123,6 @@ export default function SignIn() {
           <TextField
             variant='outlined'
             margin='normal'
-            required
             fullWidth
             id='email'
             label='Email Address'
@@ -130,7 +136,6 @@ export default function SignIn() {
           <TextField
             variant='outlined'
             margin='normal'
-            required
             fullWidth
             name='password'
             label='Password'

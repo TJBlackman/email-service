@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { FormFeedback } from '../components/form-feedback';
 import { networkRequest } from '../utils/network-request';
 import { useRouter } from 'next/router';
+import { validateRegisterValues } from '../utils/validation/user-register';
 
 const formValues = {
   firstName: '',
@@ -84,20 +85,22 @@ export default function SignUp() {
 
   const submit = (e) => {
     e.preventDefault();
-    if (localState.password !== localState.confirmPassword) {
-      dispatch({ type: 'SET ERROR', payload: 'Password do not match.' });
+    const { error, value } = validateRegisterValues({
+      firstName: localState.firstName,
+      lastName: localState.lastName,
+      email: localState.email,
+      password: localState.password,
+      confirmPassword: localState.confirmPassword,
+    });
+    if (error) {
+      dispatch({ type: 'SET ERROR', payload: error.message });
       return;
     }
     dispatch({ type: 'SUBMIT FORM' });
     networkRequest({
       url: '/api/v1/users',
       method: 'POST',
-      body: {
-        firstName: localState.firstName,
-        lastName: localState.lastName,
-        email: localState.email,
-        password: localState.password,
-      },
+      body: value,
       success: (json) => {
         dispatch({ type: 'SET SUCCESS', payload: 'Successfully Registered!' });
         setTimeout(() => {
@@ -127,7 +130,6 @@ export default function SignUp() {
                 autoComplete='fname'
                 name='firstName'
                 variant='outlined'
-                required
                 fullWidth
                 id='firstName'
                 label='First Name'
@@ -140,7 +142,6 @@ export default function SignUp() {
             <Grid item xs={12} sm={6}>
               <TextField
                 variant='outlined'
-                required
                 fullWidth
                 id='lastName'
                 label='Last Name'
@@ -154,7 +155,6 @@ export default function SignUp() {
             <Grid item xs={12}>
               <TextField
                 variant='outlined'
-                required
                 fullWidth
                 id='email'
                 label='Email Address'
@@ -168,7 +168,6 @@ export default function SignUp() {
             <Grid item xs={12}>
               <TextField
                 variant='outlined'
-                required
                 fullWidth
                 name='password'
                 label='Password'
@@ -183,9 +182,8 @@ export default function SignUp() {
             <Grid item xs={12}>
               <TextField
                 variant='outlined'
-                required
                 fullWidth
-                name='password'
+                name='confirm-password'
                 label='Confirm Password'
                 type='password'
                 id='confirm-password'

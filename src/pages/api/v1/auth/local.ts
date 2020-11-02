@@ -2,17 +2,19 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import UserModel from "../../../../db/user.model";
 import { connectToDB } from "../../../../db/connect";
 import { compareHash } from '../../../../utils/password-helpers';
+import { validateLoginValues } from "../../../../utils/validation/user-login";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    if (!req.body.email) {
-      throw new Error('Missing required property: email');
-    }
-    if (!req.body.password) {
-      throw new Error('Missing required property: password');
+    const { value, error } = validateLoginValues({
+      email: req.body.email,
+      password: req.body.password
+    });
+    if (error) {
+      throw Error(error.message);
     }
     await connectToDB();
-    const existingUsers = await UserModel.find({ email: req.body.email }).select('+password');
+    const existingUsers = await UserModel.find({ email: value.email }).select('+password');
     if (existingUsers.length === 0) {
       throw new Error('Account not found.');
     }

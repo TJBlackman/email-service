@@ -1,25 +1,36 @@
 import React, { PropsWithChildren } from 'react';
-import { Grid, Hidden } from '@material-ui/core';
+import { Box, Grid, Hidden } from '@material-ui/core';
 import Header from './header';
 import SideMenu from './side-menu';
 import Footer from './footer';
+import Head from 'next/head';
 
-const DashBoardLayout = ({ children }: PropsWithChildren<{}>) => {
+const DashBoardLayout = ({
+  children,
+  title = 'Email Service App',
+}: PropsWithChildren<{
+  title?: string;
+}>) => {
   return (
-    <div>
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
       <Header />
-      <Grid container spacing={2}>
-        <Hidden mdDown>
+      <Grid container spacing={2} alignItems='stretch'>
+        <Hidden smDown>
           <Grid item xs={12} md={3} xl={2}>
             <SideMenu />
           </Grid>
         </Hidden>
         <Grid item xs={12} md={9} xl={10}>
-          {children}
+          <Box pt={5} pb={5} px={3}>
+            {children}
+          </Box>
         </Grid>
       </Grid>
       <Footer />
-    </div>
+    </>
   );
 };
 

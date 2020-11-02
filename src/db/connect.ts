@@ -10,6 +10,6 @@ export const connectToDB = async () => {
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true,
-    useSeparateProcesses: true
+    // useSeparateProcesses: true
   });
 };

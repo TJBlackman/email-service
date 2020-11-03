@@ -2,8 +2,10 @@ import React from 'react';
 import { Button, Typography, Divider } from '@material-ui/core';
 import AppLayout from '../../components/app-layout';
 import AddIcon from '@material-ui/icons/Add';
+import { useRouter } from 'next/router';
 
 const DashboardPage = () => {
+  const router = useRouter();
   return (
     <AppLayout title='Email Organizations'>
       <Typography variant='h4' paragraph>
@@ -15,7 +17,12 @@ const DashboardPage = () => {
         on behalf of that organization. You will be able to review all the emails sent by this organization.
       </Typography>
       <Typography paragraph align='right'>
-        <Button variant='contained' color='primary' startIcon={<AddIcon />}>
+        <Button
+          variant='contained'
+          color='primary'
+          startIcon={<AddIcon />}
+          onClick={(e) => router.push('/organizations/create')}
+        >
           Create New Organization
         </Button>
       </Typography>

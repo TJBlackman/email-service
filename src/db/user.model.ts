@@ -1,6 +1,7 @@
 import mongoose, { Schema, Model } from 'mongoose';
 import { IUserDocument, IUserBase } from '../types';
 import { createHash } from "../utils/password-helpers";
+import { OrganizationModelRef, UserModelRef } from './types'
 
 const UserSchema = new Schema<IUserBase>({
   firstName: {
@@ -20,6 +21,12 @@ const UserSchema = new Schema<IUserBase>({
     type: String,
     required: true,
     select: false
+  },
+  organizations: {
+    type: [Schema.Types.ObjectId],
+    ref: OrganizationModelRef,
+    required: true,
+    default: []
   }
 });
 
@@ -33,7 +40,6 @@ UserSchema.pre<IUserDocument>("save", async function (next) {
   }
 });
 
-const userModelKey = 'Users';
-const UserModel = mongoose.models[userModelKey] as Model<IUserDocument> || mongoose.model<IUserDocument>(userModelKey, UserSchema);
+const UserModel = mongoose.models[UserModelRef] as Model<IUserDocument> || mongoose.model<IUserDocument>(UserModelRef, UserSchema);
 
 export default UserModel;

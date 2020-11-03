@@ -24,6 +24,7 @@ export interface IOrganizationBase {
   name: string;
   apiKey: string;
   sendGridAPIKeys: string[];
+  owner: IUser['_id'];
 }
 export interface IOrganization extends IOrganizationBase {
   _id: string;

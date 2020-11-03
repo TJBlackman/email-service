@@ -10,19 +10,19 @@ const SideMenu = () => {
   return (
     <div>
       <List component='nav' aria-label='main mailbox folders'>
-        <ListItem button onClick={() => router.push('/dashboard/organizations')}>
+        <ListItem button onClick={() => router.push('/emails')}>
           <ListItemIcon>
             <EmailIcon />
           </ListItemIcon>
           <ListItemText primary='Emails' />
         </ListItem>
-        <ListItem button onClick={() => router.push('/dashboard/organizations')}>
+        <ListItem button onClick={() => router.push('/organizations')}>
           <ListItemIcon>
             <AccountBalanceIcon />
           </ListItemIcon>
           <ListItemText primary='Organizations' />
         </ListItem>
-        <ListItem button onClick={() => router.push('/dashboard/organizations')}>
+        <ListItem button onClick={() => router.push('/account')}>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>

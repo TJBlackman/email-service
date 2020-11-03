@@ -96,10 +96,7 @@ export default function SignIn() {
     networkRequest({
       url: '/api/v1/auth/local',
       method: 'POST',
-      body: {
-        email: localState.email,
-        password: localState.password,
-      },
+      body: value,
       success: (json) => {
         setUserData(json.data);
         router.push('/dashboard');

@@ -3,6 +3,8 @@ import UserModel from "../../../../db/user.model";
 import { connectToDB } from "../../../../db/connect";
 import { compareHash } from '../../../../utils/password-helpers';
 import { validateLoginValues } from "../../../../utils/validation/user-login";
+import { setUserAuthCookie } from '../../../../utils/cookie-helpers';
+import { IUser } from '../../../../types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -22,8 +24,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (isCorrectPw === false) {
       throw Error('Incorrect password.');
     }
-    const user = existingUsers[0].toObject();
+    const user = existingUsers[0].toObject() as IUser;
     delete user.password;
+    await setUserAuthCookie(req, res, {
+      _id: user._id,
+      email: user.email
+    });
     res.json({
       success: true,
       data: user

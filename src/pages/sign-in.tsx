@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(1, 0, 2),
   },
 }));
 
@@ -143,6 +143,7 @@ export default function SignIn() {
             onChange={(e) => dispatch({ type: 'SET PASSWORD', payload: e.target.value })}
             disabled={localState.loading}
           />
+          <br />
           <FormFeedback
             success={localState.success}
             error={localState.error}

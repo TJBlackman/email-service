@@ -1,10 +1,33 @@
+import { string } from 'joi';
 import mongoose, { Schema, Model } from 'mongoose';
 import { IOrganizationDocument } from '../types';
 import { OrganizationModelRef, UserModelRef } from './types'
 
+const sendGridAPISchema = new Schema<{
+  email: string;
+  password: string;
+  apiKey: string;
+}>({
+  email: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  apiKey: {
+    type: String,
+    password: true
+  }
+});
 
 const UserSchema = new Schema<IOrganizationDocument>({
   name: {
+    type: String,
+    required: true
+  },
+  description: {
     type: String,
     required: true
   },
@@ -13,7 +36,7 @@ const UserSchema = new Schema<IOrganizationDocument>({
     required: true
   },
   sendGridAPIKeys: {
-    type: Array,
+    type: [sendGridAPISchema],
     required: true
   },
   owner: {

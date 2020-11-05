@@ -31,3 +31,8 @@ export interface IOrganization extends IOrganizationBase {
   __v: number;
 }
 export interface IOrganizationDocument extends IOrganizationBase, Document { };
+
+//
+// Email API Providers
+//
+export const SupportedEmailProviders = ['SendGrid'] as const;

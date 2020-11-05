@@ -5,7 +5,7 @@ import { useUserContext } from '../react-contexts/user';
 export default function ButtonAppBar() {
   const { logout } = useUserContext();
   return (
-    <AppBar position='static'>
+    <AppBar position='static' component='header'>
       <Toolbar>
         <Typography variant='h6' style={{ flexGrow: 1 }}>
           Email Service

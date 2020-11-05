@@ -29,9 +29,9 @@ export const FormFeedback = ({ success, error, clearError }: IProps) => {
 };
 
 // styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   alertClass: {
     flex: '1 1 100%',
-    marginBottom: '20px',
+    margin: theme.spacing(2, 0),
   },
-});
+}));

@@ -1,28 +1,21 @@
-import { string } from 'joi';
 import mongoose, { Schema, Model } from 'mongoose';
-import { IOrganizationDocument } from '../types';
+import { IOrganizationDocument, IProviderCredentials } from '../types';
 import { OrganizationModelRef, UserModelRef } from './types'
 
-const sendGridAPISchema = new Schema<{
-  email: string;
-  password: string;
-  apiKey: string;
-}>({
-  email: {
+const ProviderCredentialsSchema = new Schema<IProviderCredentials>({
+  providerName: {
     type: String,
     required: true
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  apiKey: {
+  providerEmail: String,
+  providerPassword: String,
+  providerAPIKey: {
     type: String,
     password: true
   }
 });
 
-const UserSchema = new Schema<IOrganizationDocument>({
+const OrganizationSchema = new Schema<IOrganizationDocument>({
   name: {
     type: String,
     required: true
@@ -35,8 +28,8 @@ const UserSchema = new Schema<IOrganizationDocument>({
     type: String,
     required: true
   },
-  sendGridAPIKeys: {
-    type: [sendGridAPISchema],
+  providerCredentials: {
+    type: [ProviderCredentialsSchema],
     required: true
   },
   owner: {
@@ -47,6 +40,6 @@ const UserSchema = new Schema<IOrganizationDocument>({
 });
 
 
-const OrganizationModel = mongoose.models[OrganizationModelRef] as Model<IOrganizationDocument> || mongoose.model<IOrganizationDocument>(OrganizationModelRef, UserSchema);
+const OrganizationModel = mongoose.models[OrganizationModelRef] as Model<IOrganizationDocument> || mongoose.model<IOrganizationDocument>(OrganizationModelRef, OrganizationSchema);
 
 export default OrganizationModel;

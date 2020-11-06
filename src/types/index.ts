@@ -20,10 +20,17 @@ export interface IUserJWT extends Pick<IUser, 'firstName' | 'lastName' | 'email'
 //
 // Oranization Types
 //
+export interface IProviderCredentials {
+  providerName: string;
+  providerAPIKey: string;
+  providerEmail?: string;
+  providerPassword?: string;
+}
 export interface IOrganizationBase {
   name: string;
+  description: string;
   apiKey: string;
-  sendGridAPIKeys: string[];
+  providerCredentials: IProviderCredentials[];
   owner: IUser['_id'];
 }
 export interface IOrganization extends IOrganizationBase {

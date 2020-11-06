@@ -1,22 +1,23 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import OrganizationModel from "../../../../db/organizations.model";
 import { connectToDB } from "../../../../db/connect";
-import { IOrganization } from '../../../../types';
+import { IOrganizationBase } from '../../../../types';
 import { requireUserCookieAuth } from "../../../../utils/cookie-helpers";
-import { validateCreateOrganizationValues } from "../../../../utils/validation/organization-create";
+import { validateNewOrganization } from "../../../../utils/validation/organization-create";
 import { v4 as uuidv4 } from 'uuid';
 import UserModel from '../../../../db/user.model';
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    await connectToDB();
     const { _id } = await requireUserCookieAuth(req, res);
     const user = await UserModel.findById(_id);
-    const values = await validateCreateOrganizationValues(req.body);
-    await connectToDB();
+    const values = await validateNewOrganization(req.body);
     const newOrg = new OrganizationModel({
       name: values.name,
-      sendGridAPIKeys: values.sendGridAPIKeys,
+      description: values.description,
+      providerCredentials: values.providerCredentials,
       owner: user._id,
       apiKey: uuidv4()
     });

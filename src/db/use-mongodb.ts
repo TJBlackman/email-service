@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-export const connectToDB = async () => {
+export const useMongoDB = async () => {
   if (mongoose.connections[0].readyState) {
     return;
   };

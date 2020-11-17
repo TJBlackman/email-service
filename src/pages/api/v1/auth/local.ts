@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import UserModel from "../../../../db/user.model";
-import { connectToDB } from "../../../../db/connect";
+import { useMongoDB } from "../../../../db/use-mongodb";
 import { compareHash } from '../../../../utils/password-helpers';
 import { validateLoginValues } from "../../../../utils/validation/user-login";
 import { setUserAuthCookie } from '../../../../utils/cookie-helpers';
@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (error) {
       throw Error(error.message);
     }
-    await connectToDB();
+    await useMongoDB();
     const existingUsers = await UserModel.find({ email: value.email }).select('+password');
     if (existingUsers.length === 0) {
       throw new Error('Account not found.');

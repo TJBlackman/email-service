@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import UserModel from "../../../../db/user.model";
-import { connectToDB } from "../../../../db/connect";
+import { useMongoDB } from "../../../../db/use-mongodb";
 import { IUser } from '../../../../types';
 import { validateRegisterValues } from '../../../../utils/validation/user-register'
 
@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (error) {
     throw new Error(error.message);
   }
-  await connectToDB();
+  await useMongoDB();
   const existingUser = await UserModel.find({ email: value.email });
   if (existingUser.length > 0) {
     throw new Error('Email address is already in use.');

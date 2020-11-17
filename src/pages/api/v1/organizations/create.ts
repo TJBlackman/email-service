@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import OrganizationModel from "../../../../db/organizations.model";
-import { connectToDB } from "../../../../db/connect";
+import { useMongoDB } from "../../../../db/use-mongodb";
 import { IOrganizationBase } from '../../../../types';
 import { requireUserCookieAuth } from "../../../../utils/cookie-helpers";
 import { validateNewOrganization } from "../../../../utils/validation/organization-create";
@@ -10,7 +10,7 @@ import UserModel from '../../../../db/user.model';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    await connectToDB();
+    await useMongoDB();
     const { _id } = await requireUserCookieAuth(req, res);
     const user = await UserModel.findById(_id);
     const values = await validateNewOrganization(req.body);
